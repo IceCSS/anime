@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Anime Quotes</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous" rel="stylesheet">
+
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+            }
+
+            #bg {
+                /* background-color: black; */
+                background-image: url("");
+
+                height: 100%;
+                /* opacity: 0.65; */
+
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+
+                box-shadow: inset 0 0 50px #000000;
+            }
+
+            .name {
+                position: absolute;
+                top: 0;
+                margin: 20px;
+                padding: 10px;
+
+                font-size: 20px;
+                font-weight: 700;
+                color: white;
+
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
+            .dropbtn {
+                border-radius: 5px;
+
+                /* top: 0;
+                right: 0; */
+                padding: 10px;
+
+                color: white;
+                font-size: 20px;
+                font-weight: 700;
+
+
+                color: white;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+
+            .dropdown {
+                position: absolute;
+                top: 0;
+                right: 0;
+
+                padding: 10px;
+                margin: 20px;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: transparent;
+                z-index: 1;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 10px 0 10px 0;
+                display: block;
+                font-size: 20px;
+                text-align: center;
+            }
+
+
+            .dropdown-content a:hover {background-color: rgba(0, 0, 0, 0.7);}
+
+            .dropdown:hover .dropdown-content {display: block;}
+
+            .dropdown:hover .dropbtn {background-color: rgba(0, 0, 0, 0.7);}
+
+            .center {
+                font-size: 40px;
+                font-weight: 700;
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                text-align: center;
+                color: white;
+            }
+
+            .center span.border {
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #fff;
+                width: 50px;
+                padding: 10px;
+            }
+
+
+            #quote {
+                animation: fadein 2s;
+            }
+
+            @keyframes fadein {
+                from { opacity: 0; }
+                to   { opacity: 1; }
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="bg"></div>
+        <div class="name">
+            Anime Quotes (Beta)
+        </div>
+
+        <div class="dropdown">
+            <div class="dropbtn">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+
+            <div class="dropdown-content">
+                <a href="#">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#">
+                    <i class="fab fa-app-store"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="center">
+            <span id="quote" class="border">
+                Press Spacebar
+            </span>
+            <br>
+            <span id="author" class="border">
+                <!-- - Lelouch Vi Brittana -->
+            </span>
+        </div>
+
+
+    <script type="text/javascript">
+      let CLIENT_ID = '177765696191-mlq31sv10rthc3m277d16kk7f9h1ufjp.apps.googleusercontent.com';
+      let API_KEY = 'AIzaSyD3UEmMGSShTXaf5-Fc--cqGQx9MzVsW5Y';
+
+      let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+
+      let SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+
+      let quote = document.getElementById('quote');
+      let author = document.getElementById('author');
+
+      let usageLimit = 0;
+
+      function handleClientLoad() {
+          gapi.load('client:auth2', initClient);
+      }
+
+        function initClient() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(function () {
+
+                setInterval( () => {
+                    if (quote.innerText == "Wait") {
+                        quote.innerText = `Press Spacebar`;
+                        author.innerText = `- `;
+                    }
+                    usageLimit = 0;
+                }, 10000);
+
+                window.addEventListener("keypress", () => {
+                    if(usageLimit > 1) {
+                        quote.innerText = `Wait`;
+                        author.innerText = `- (Please don't spam the api thanks)`;
+                    } else {
+                        listMajors();
+                    }
+                    usageLimit++;
+                });
+            }, function(error) {
+            });
+        }
+
+        function listMajors() {
+            let quoteId = Math.floor(Math.random() * 44) + 1;
+
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: '1v85G3s_WArZ1FfRQefMnr255fC545C9n7ZvPRnPnGaI',
+                range: `A${quoteId}:E${quoteId}`,
+                majorDimension: 'ROWS'
+            }).then(function(response) {
+                var range = response.result;
+
+                if (range.values.length > 0) {
+                    console.log(range.values[0]);
+
+                    let bg = document.getElementById('bg');
+                    bg.style.backgroundImage = `url(${range.values[0][4]})`;
+                    let quote = document.getElementById('quote');
+                    quote.innerText = `${range.values[0][2]}`;
+                    let author = document.getElementById('author');
+                    author.innerText = `- ${range.values[0][3]}`;
+
+                } else {
+                }
+            }, function(response) {
+            });
+        }
+
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()">
+    </script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    </body>
+    </html>
+
+
+
+    <!-- // for (i = 0; i < range.values.length; i++) {
+    //     var row = range.values[i];
+    //     console.log(row[2]);
+    //     // Print columns A and E, which correspond to indices 0 and 4.
+    //     // appendPre(row);
+    // } -->
