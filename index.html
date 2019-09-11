@@ -178,16 +178,19 @@
                 discoveryDocs: DISCOVERY_DOCS,
                 scope: SCOPES
             }).then(function () {
-
+                console.log('init done');
                 setInterval( () => {
                     if (quote.innerText == "Wait") {
                         quote.innerText = `Press Spacebar`;
                         author.innerText = `- `;
                     }
+                    console.log('usageLimit reset');
                     usageLimit = 0;
                 }, 10000);
 
                 window.addEventListener("keypress", () => {
+                    console.log('keypressed');
+
                     if(usageLimit > 1) {
                         quote.innerText = `Wait`;
                         author.innerText = `- (Please don't spam the api thanks)`;
