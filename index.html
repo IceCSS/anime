@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Anime Quotes</title>
+        <title>Anime A Day (Beta)</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,7 @@
 
             #bg {
                 /* background-color: black; */
-                background-image: url("https://www.dropbox.com/s/40gs79puqxulexo/fairyTail.png?raw=1");
+                background-image: url("");
 
                 height: 100%;
                 /* opacity: 0.65; */
@@ -42,11 +42,15 @@
                 background-color: rgba(0, 0, 0, 0.7);
             }
 
+            .dropdown {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 20px 20px 0 0;
+            }
+
             .dropbtn {
                 border-radius: 5px;
-
-                /* top: 0;
-                right: 0; */
                 padding: 10px;
 
                 color: white;
@@ -58,36 +62,26 @@
                 background-color: rgba(0, 0, 0, 0.7);
             }
 
-            .dropdown {
-                position: absolute;
-                top: 0;
-                right: 0;
-
-                padding: 10px;
-                margin: 20px;
-            }
-
             .dropdown-content {
                 display: none;
                 position: absolute;
                 background-color: transparent;
                 z-index: 1;
+                /* padding: 10px; */
+                text-align: center;
+
             }
 
             .dropdown-content a {
                 color: black;
-                padding: 10px 0 10px 0;
+                padding: 10px 0px 10px 5px;
                 display: block;
                 font-size: 20px;
                 text-align: center;
+                /* padding: 10px; */
             }
 
-
-            .dropdown-content a:hover {background-color: rgba(0, 0, 0, 0.7);}
-
-            .dropdown:hover .dropdown-content {display: block;}
-
-            .dropdown:hover .dropbtn {background-color: rgba(0, 0, 0, 0.7);}
+            .dropdown:hover .dropdown-content { display: block; }
 
             .center {
                 font-size: 40px;
@@ -107,21 +101,25 @@
             }
 
 
-            #quote {
-                animation: fadein 2s;
+            /* .fade {
+                animation: fadeIn 2s;
             }
 
-            @keyframes fadein {
+            @keyframes fadeIn {
                 from { opacity: 0; }
                 to   { opacity: 1; }
-            }
+            } */
+
+            .fa-facebook-f { color: #3b5998; }
+            .fa-twitter { color:  #00acee; }
+            .fa-app-store { color: #008cf9; }
         </style>
     </head>
     <body>
 
         <div id="bg"></div>
         <div class="name">
-            Anime Quotes (Beta)
+            Anime A Day (Beta)
         </div>
 
         <div class="dropdown">
@@ -130,7 +128,7 @@
             </div>
 
             <div class="dropdown-content">
-                <a href="#">
+                <a href="https://www.facebook.com/Anime-a-day-110269190359094" target="_blank">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a href="#">
@@ -144,109 +142,94 @@
 
         <div class="center">
             <span id="quote" class="border">
-              The moment you think of giving up, think of the reason why you held on so long.
+                Click or Touch Background
+                <!-- Happiness is like glass. It may be all around you, yet be invisible.
+                But if you change your angle of viewing a little, it will reflect
+                light more beautifully than any other object -->
             </span>
             <br>
             <span id="author" class="border">
-                - Natsu Dragneel
+                <!-- - Lelouch Vi Brittana -->
+                Best Anime Quotes
             </span>
         </div>
 
 
-    <script type="text/javascript">
-      let CLIENT_ID = '773245962646-eq1j1mjt86coor9ref03ms7irdlu7si2.apps.googleusercontent.com';
-      let API_KEY = 'AIzaSyD3UEmMGSShTXaf5-Fc--cqGQx9MzVsW5Y';
+        <script type="text/javascript">
+            let CLIENT_ID = '773245962646-eq1j1mjt86coor9ref03ms7irdlu7si2.apps.googleusercontent.com';
+            let API_KEY = 'AIzaSyD3UEmMGSShTXaf5-Fc--cqGQx9MzVsW5Y';
 
-      let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+            let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 
-      let SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+            let SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
 
-      let quote = document.getElementById('quote');
-      let author = document.getElementById('author');
+            let bg = document.getElementById('bg');
+            let quote = document.getElementById('quote');
+            let author = document.getElementById('author');
 
-      let usageLimit = 0;
+            let usageLimit = 0;
 
-      function handleClientLoad() {
-          gapi.load('client:auth2', initClient);
-      }
+            function handleClientLoad() { gapi.load('client:auth2', initClient); }
 
-        function initClient() {
-            console.log('init');
-            gapi.client.init({
-                apiKey: API_KEY,
-                clientId: CLIENT_ID,
-                discoveryDocs: DISCOVERY_DOCS,
-                scope: SCOPES
-            }).then(function () {
-                console.log('init done');
-                setInterval( () => {
-                    if (quote.innerText == "Wait") {
-                        quote.innerText = `Press Spacebar`;
-                        author.innerText = `- `;
-                    }
-                    console.log('usageLimit reset');
-                    usageLimit = 0;
-                }, 10000);
+            function initClient() {
+                gapi.client.init({
+                    apiKey: API_KEY,
+                    clientId: CLIENT_ID,
+                    discoveryDocs: DISCOVERY_DOCS,
+                    scope: SCOPES
+                }).then(function () {
+                    setInterval( () => {
+                        if (quote.innerText == "Wait") {
+                            quote.innerText = `Click or Touch Background `;
+                            author.innerText = `- `;
+                        }
+                        usageLimit = 0;
+                    }, 10000);
 
-                window.addEventListener("keypress", () => {
-                    console.log('keypressed');
-
-                    if(usageLimit > 1) {
-                        quote.innerText = `Wait`;
-                        author.innerText = `- (Please don't spam the api thanks)`;
-                    } else {
-                        console.log('Generating Quote');
-                        listMajors();
-                    }
-                    usageLimit++;
+                    bg.addEventListener("click", () => {
+                        if(usageLimit > 1) {
+                            quote.innerText = `Wait`;
+                            author.innerText = `- (Please don't spam the api thanks)`;
+                        } else {
+                            getRandomQuote();
+                        }
+                        usageLimit++;
+                    });
+                }, function(error) {
                 });
-            }, function(error) {
-            });
-        }
+            }
 
-        function listMajors() {
-            let quoteId = Math.floor(Math.random() * 44) + 1;
+            function getRandomQuote() {
+                let quoteId = Math.floor(Math.random() * 44) + 1;
 
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: '1v85G3s_WArZ1FfRQefMnr255fC545C9n7ZvPRnPnGaI',
-                range: `A${quoteId}:E${quoteId}`,
-                majorDimension: 'ROWS'
-            }).then(function(response) {
-                var range = response.result;
+                gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: '1v85G3s_WArZ1FfRQefMnr255fC545C9n7ZvPRnPnGaI',
+                    range: `A${quoteId}:E${quoteId}`,
+                    majorDimension: 'ROWS'
+                }).then(function(response) {
+                    var range = response.result;
+                    if (range.values.length > 0) {
+                        console.log(range.values[0]);
 
-                if (range.values.length > 0) {
-                    console.log(range.values[0]);
+                        let bg = document.getElementById('bg');
+                        bg.style.backgroundImage = `url(${range.values[0][4]})`;
+                        let quote = document.getElementById('quote');
+                        quote.innerText = `${range.values[0][2]}`;
+                        let author = document.getElementById('author');
+                        author.innerText = `- ${range.values[0][3]}`;
 
-                    let bg = document.getElementById('bg');
-                    bg.style.backgroundImage = `url(${range.values[0][4]})`;
-                    let quote = document.getElementById('quote');
-                    quote.innerText = `${range.values[0][2]}`;
-                    let author = document.getElementById('author');
-                    author.innerText = `- ${range.values[0][3]}`;
+                    } else {
+                    }
+                }, function(response) {});
+            }
+        </script>
 
-                } else {
-                }
-            }, function(response) {
-            });
-        }
-
-    </script>
-
-<!--     <script async defer src="https://apis.google.com/js/api.js"
-        onload="this.onload=function(){};handleClientLoad()">
-    </script> -->
+        <script async defer src="https://apis.google.com/js/api.js"
+            onload="this.onload=function(){};handleClientLoad()">
+        </script>
 
         <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
     </body>
-    </html>
-
-
-
-    <!-- // for (i = 0; i < range.values.length; i++) {
-    //     var row = range.values[i];
-    //     console.log(row[2]);
-    //     // Print columns A and E, which correspond to indices 0 and 4.
-    //     // appendPre(row);
-    // } -->
+</html>
